@@ -1,0 +1,42 @@
+name: Push DNS
+on: workflow_dispatch
+jobs:
+  generate_dns:
+    runs-on: ubuntu-latest
+    name: Generate DNS files
+    outputs:
+      matrix: ${{ steps.matrix.outputs.value }}
+    steps:
+      - name: Download source
+        uses: actions/checkout@v2
+      - name: Download sponsors.cr
+        run: |
+          wget -O sponsors-cr-binary.zip https://github.com/GeopJr/sponsors.cr/releases/download/v1.2.0/sponsors-1.2.0-linux-x86_64-static.zip
+          unzip sponsors-cr-binary.zip
+      - name: Generate DNS lists
+        run: rm -rf sponsors/_*/*.json && mkdir ./exports && ./sponsors -i domains -t json -o ./exports -r
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sponsors-dns-jsons
+          path: ./exports/
+      - id: matrix
+        run: |
+          echo "::set-output name=value::[\"$(echo $(find ./exports/ -name "*.json" -exec basename {} .json \;) | sed 's/ /\", \"/g')\"]"
+  update_dns:
+    name: Update Cloudflare DNS records
+    needs: generate_dns
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        value: ${{fromJson(needs.generate_dns.outputs.matrix)}}
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          path: ./GH_ARTIFACTS
+      - name: Rename JSON
+        run: mv ./GH_ARTIFACTS/**/${{ matrix.value }}.json ./DNS-RECORDS.json
+      - uses: geopjr/with-a-chance-of-meatballs@d5d438956ae94159a9a2e2f64832aa12700bc1f0
+        with:
+          zone: ${{ matrix.value }}
+          cloudflareToken: ${{ secrets.CF_TOKEN }}

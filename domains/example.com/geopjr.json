@@ -1,0 +1,19 @@
+{
+  "contact": {
+    "twitter": "GeopJr1312"
+  },
+  "records": {
+    "A": [
+      {
+        "name": "geopjr.dev",
+        "target": "192.0.2.1",
+        "description": "Rewrite rule"
+      },
+      {
+        "name": "www",
+        "target": "192.0.2.1",
+        "description": "Rewrite rule"
+      }
+    ]
+  }
+}
