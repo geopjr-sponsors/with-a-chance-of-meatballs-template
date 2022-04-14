@@ -26,7 +26,7 @@ The JSON files have the following format:
     "<A/AAAA/CNAME/TXT>": [
       {
         "name": "String",
-        "target": "String",
+        "content": "String",
         "ttl": "Int32?",
         "description": "String?"
       }

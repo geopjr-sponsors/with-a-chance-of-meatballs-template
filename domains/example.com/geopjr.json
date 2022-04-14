@@ -6,12 +6,12 @@
     "A": [
       {
         "name": "geopjr.dev",
-        "target": "192.0.2.1",
+        "content": "192.0.2.1",
         "description": "Rewrite rule"
       },
       {
         "name": "www",
-        "target": "192.0.2.1",
+        "content": "192.0.2.1",
         "description": "Rewrite rule"
       }
     ]
