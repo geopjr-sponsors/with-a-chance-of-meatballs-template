@@ -36,7 +36,7 @@ jobs:
           path: ./GH_ARTIFACTS
       - name: Rename JSON
         run: mv ./GH_ARTIFACTS/**/${{ matrix.value }}.json ./DNS-RECORDS.json
-      - uses: geopjr/with-a-chance-of-meatballs@5843b78deef9c0d768bf33f97d92ac33705167c0
+      - uses: geopjr/with-a-chance-of-meatballs@14c3fe45ec3358acb2d778c4427510f0c7095714
         with:
           zone: ${{ matrix.value }}
           cloudflareToken: ${{ secrets.CF_TOKEN }}
